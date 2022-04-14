@@ -42,9 +42,16 @@
     </div>
 
     <script>
-    //fetch("http://localhost:3000/v1/awair-score/70886B105984/minutes/15", {mode:"no-cors"}).then(r => r.json()).then(data =>{
-    //  console.log(data.data)
-    //})
+    /*Calls for fetch
+    server.get(prefix + "/", healthCheck);
+    server.get(prefix + "/awair-score/:device_id/minutes/:minutes", originalAwairScoreInLastMinutes);
+    server.get(prefix + "/awair-score/:device_id/last/:x", originalAwairScoreLastX);
+    server.get(prefix + "/awair-score/:device_id/average/minutes/:minutes", originalAwairScoreTimeAggregationMinutes);
+    server.get(prefix + "/custom-score/:device_id/average/minutes/:minutes", customScoresLastX);
+    */
+    fetch("http://localhost:3000/v1/awair-score/70886b123b81/minutes/15", {mode:"no-cors"}).then(r => r.json()).then(data =>{
+      console.log(data.data)
+    })
     </script>
 
     <div class="col-md-4">
