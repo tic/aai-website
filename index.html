@@ -43,6 +43,10 @@
     </div>
 
     <script>
+    const querystrings = (window.location.href.split("?")[1].split("&").reduce(
+        (acc, cur) => { const [param, value] = cur.split("="); acc[param] = value; return acc; }, {})
+    );
+    console.log(querystrings);
     /*Calls for fetch
     server.get(prefix + "/", healthCheck);
     server.get(prefix + "/awair-score/:device_id/minutes/:minutes", originalAwairScoreInLastMinutes);
