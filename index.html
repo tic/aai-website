@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- required to handle IE -->
     <meta name="viewport" content="width=device-width, initial-scale=1">  
     <title>Score_View</title>
-   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <header>  
     <nav class="navbar navbar-expand-md bg-dark navbar-dark">
@@ -38,8 +39,8 @@
         </div>
         <p>Device ID: awair_22966</p>
         <p>Location: Rice Hall</p>
-        <p>Enviornmental Score: 82</p>
-        <p>Occupational Score: 82</p>
+        <p>Enviornmental Score: <b id="enviornmental_score">N/A</b></p>
+        <p>Occupational Score: <b id="occupational_score">N/A</b></p>
     </div>
 
     <script>
@@ -55,10 +56,13 @@
     server.get(prefix + "/custom-score/:device_id/average/minutes/:minutes", customScoresLastX);
     */
 	
-    fetch("http://localhost:3000/v1/awair-score/70886b123b81/minutes/15")
+    fetch("http://localhost:3000/v1/custom-score/70886b123b81/average/minutes/15")
 	.then(r => r.json())
 	.then(data => {
       console.log(data.data)
+      //Need to change so that way the latest version gets picked and also the decimals are formatted
+      document.getElementById("enviornmental_score").innerHTML = data.data[1]["value"]
+      document.getElementById("occupational_score").innerHTML = data.data[2]["value"]
     });
     </script>
 
@@ -75,6 +79,6 @@
 
 </body>
 
-<footer class="primary-footer bg-dark">
-    <small class="copyright" style="color: azure;">&copy; Living Link Lab</small>
-</footer>
+<div id="footer">
+  <small class="copyright" style="color: azure;">&copy; Living Link Lab</small>
+</div>
