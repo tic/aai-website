@@ -38,8 +38,26 @@
 </header>
 
 <body style="background-color:rgb(255, 213, 184); text-align: center;">
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfqBwuY8fDstk2QJso2LL3zJczT6zhyDTZyGB93rG7HGlZB8w/viewform?embedded=true" width="500" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <!-- Use Javascript to list all devices students can select (using index.html)-->
+    <h2>Device List</h2>
+    <table border="1" align="center">
+    <script>
+        //need to make the device_id list
+        //need to also add location so people know what device is what 
+        const device_ids = ["70886b1259c5","70886b126254","70886b12600d", "70886b126329", "70886b125db1", "70886b125efe", "70886b125400", "70886b12621c", "70886b12628e"]
+        document.open();
+        device_ids.forEach(function(item,index) {
+            console.log(index%3)
+            if (index%3 == 0){
+                document.write("<tr>")
+            }
+            document.write("<td>Device: <a href=./index.html?device_id=".concat(item,">Device ",index+1,"</a></td>"))
+        })
+        document.close();
+    </script>
+    </table>
 </body>
+
 
 <div id="footer">
     <small class="copyright" style="color: azure;">&copy; Living Link Lab</small>
