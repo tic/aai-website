@@ -43,10 +43,10 @@
         <div>
           <img style="border: 2px solid #000000; border-radius:40px;" src="awair_sensor_clear.jpg" width="200" height="200"/>
         </div>
-        <p>Device ID: awair_22966</p>
-        <p>Location: Rice Hall</p>
-        <p>Enviornmental Score: <b id="enviornmental_score">N/A</b></p>
-        <p>Occupational Score: <b id="occupational_score">N/A</b></p>
+        <p>Device ID: <b id="device_id">Null</b></p>
+        <p>Location: <b id="device_location">Null</b></p>
+        <p>Enviornmental Score: <b id="enviornmental_score">Null</b></p>
+        <p>Occupational Score: <b id="occupational_score">Null</b></p>
     </div>
 
     <script>
@@ -64,18 +64,30 @@
     server.get(prefix + "/custom-score/:device_id/average/minutes/:minutes", customScoresLastX);
     */
   
-    //Replace with server link
-	  const device_request = "https://awair.linklab.virginia.edu/api/v1/custom-score/".concat(querystrings.device_id,"/average/minutes/15");
-
-    fetch(device_request)
+	  const device_score_request = "https://awair.linklab.virginia.edu/api/v1/custom-score/".concat(querystrings.device_id,"/average/minutes/15");
+    
+    fetch(device_score_request)
 	  .then(r => r.json())
 	  .then(data => {
       console.log(data.data)
-      //Need to change so that way the latest version gets picked and also the decimals are formatted
+      //Need to change so that way the latest version gets picked
       //Need to make it so that if the device id is incorrect, it displays INCORRECT ID/ DEVICE OFFLINE
       document.getElementById("enviornmental_score").innerHTML = data.data[1]["value"].toFixed(2)
       document.getElementById("occupational_score").innerHTML = data.data[2]["value"].toFixed(2)
     });
+
+    const device_information_request = "https://awair.linklab.virginia.edu/api/v1/devices/"
+
+    fetch(device_information_request)
+    .then(r => r.json())
+    .then(data=>{
+      data.devices.forEach(function(item,index) {
+        if(item.device_id === querystrings.device_id){
+          document.getElementById("device_id").innerHTML = item.device_id
+          document.getElementById("device_location"). innerHTML = item.location
+        }
+      })
+    })
     </script>
 
     <div>
