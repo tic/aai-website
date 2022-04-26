@@ -41,7 +41,7 @@
     <div>
         <h3><u>Awair Sensor</u></h3>
         <div>
-          <img style="border: 2px solid #000000; border-radius:40px;" src="awair_sensor.jpg" width="200" height="200"/>
+          <img style="border: 2px solid #000000; border-radius:40px;" src="awair_sensor_clear.jpg" width="200" height="200"/>
         </div>
         <p>Device ID: awair_22966</p>
         <p>Location: Rice Hall</p>
@@ -65,7 +65,7 @@
     */
   
     //Replace with server link
-	  const device_request = "http://localhost:3000/v1/custom-score/".concat(querystrings.device_id,"/average/minutes/15");
+	  const device_request = "https://awair.linklab.virginia.edu/api/v1/custom-score/".concat(querystrings.device_id,"/average/minutes/15");
 
     fetch(device_request)
 	  .then(r => r.json())
