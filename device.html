@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">   
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- required to handle IE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <title>Score_View</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<header>  
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+      <a class="navbar-brand">AWAIR and Informed</a>
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">   
+        <ul class="navbar-nav">  
+          <li class="nav-item"> 
+            <a class="nav-link" href="./device_list.html">Device List</a>
+          </li>
+          <li class="nav-item"> 
+            <a class="nav-link" href="./feedback.html">Provide Feedback</a>
+          </li>                         
+          <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://livinglinklab.github.io/">Living Link Lab</a>
+          </li>            
+          <li class="nav-item"> 
+            <a class="nav-link" href="./faq.html">FAQ</a>
+          </li>                  
+        </ul>
+      </div>  
+              
+    </nav>
+</header>
+
+<body style="background-color:rgb(255, 213, 184); text-align: center;">
+    <div>
+      <br>  
+      <h3><u>Awair Sensor</u></h3>
+        <div>
+          <img style="border: 2px solid #000000; border-radius:40px;" src="awair_sensor_clear.jpg" width="200" height="200"/>
+        </div>
+        <p>Device ID: <b id="device_id">Null</b></p>
+        <p>Location: <b id="device_location">Null</b></p>
+        <p>Enviornmental Score: <b id="enviornmental_score">Null</b></p>
+        <p>Occupational Score: <b id="occupational_score">Null</b></p>
+        <br>
+    </div>
+
+    <script>
+    //Pulls fields from the url into to be used. device_id is used to grab the information at a specific device (Example: 70886b123b81)
+    //Need to work on setting a time field
+    const querystrings = (window.location.href.split("?")[1].split("&").reduce(
+        (acc, cur) => { const [param, value] = cur.split("="); acc[param] = value; return acc; }, {})
+    );
+    console.log(querystrings.device_id);
+    /*Calls for fetch
+    server.get(prefix + "/", healthCheck);
+    server.get(prefix + "/awair-score/:device_id/minutes/:minutes", originalAwairScoreInLastMinutes);
+    server.get(prefix + "/awair-score/:device_id/last/:x", originalAwairScoreLastX);
+    server.get(prefix + "/awair-score/:device_id/average/minutes/:minutes", originalAwairScoreTimeAggregationMinutes);
+    server.get(prefix + "/custom-score/:device_id/average/minutes/:minutes", customScoresLastX);
+    */
+  
+	  const device_score_request = "https://awair.linklab.virginia.edu/api/v1/custom-score/".concat(querystrings.device_id,"/average/minutes/15");
+    
+    fetch(device_score_request)
+	  .then(r => r.json())
+	  .then(data => {
+      console.log(data.data)
+      //Need to change so that way the latest version gets picked
+      //Need to make it so that if the device id is incorrect, it displays INCORRECT ID/ DEVICE OFFLINE
+      document.getElementById("enviornmental_score").innerHTML = data.data[1]["value"].toFixed(2)
+      document.getElementById("occupational_score").innerHTML = data.data[2]["value"].toFixed(2)
+    });
+
+    const device_information_request = "https://awair.linklab.virginia.edu/api/v1/devices/"
+
+    fetch(device_information_request)
+    .then(r => r.json())
+    .then(data=>{
+      data.devices.forEach(function(item,index) {
+        if(item.device_id === querystrings.device_id){
+          document.getElementById("device_id").innerHTML = item.device_id
+          document.getElementById("device_location"). innerHTML = item.location
+        }
+      })
+    })
+    </script>
+
+    <div>
+        <h4><u>What is Occupational Score</u></h4>
+        <p>The occupational score determines the population of the room</p>
+        <h4><u>What is Enviornmental Score</u></h4>
+        <p>Determines the health of the enviornment</p>
+     </div>
+
+</body>
+
+<div id="footer">
+  <small class="copyright" style="color: black;">&copy; Living Link Lab</small>
+</div>
